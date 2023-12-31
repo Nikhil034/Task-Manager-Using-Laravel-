@@ -51,6 +51,10 @@ input[type="password"] {
 .btn-reset:hover {
     background-color: #c82333;
 }
+.error
+{
+    color:red;
+}
 
 
 </style>    
@@ -71,13 +75,18 @@ input[type="password"] {
         <h2>Forgot Password</h2>
         <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            <input type="email" id="email" name="email" placeholder="Enter your email">
         </div>
         <div class="form-group">
             <label for="password">New Password</label>
-            <input type="password" id="password" name="password" placeholder="Enter new password" required>
+            <input type="password" id="password" name="password" placeholder="Enter new password" >
         </div>
         <button type="submit" class="btn-reset">Reset Password</button>
+        <ul class="error"> 
+        @foreach($errors->all() as $error) 
+        <li>{{ $error }}</li> 
+        @endforeach 
+    </ul>
     </form>
 </div>
 
