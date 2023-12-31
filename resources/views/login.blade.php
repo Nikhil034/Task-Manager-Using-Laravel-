@@ -60,6 +60,10 @@ input[type="password"] {
     margin: 0 5px;
     color: #999;
 }
+.error
+{
+    color:red;
+}
 
 </style>    
 
@@ -80,18 +84,23 @@ input[type="password"] {
         @csrf
         <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            <input type="email" id="email" name="email" placeholder="Enter your email" >
         </div>
         <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            <input type="password" id="password" name="password" placeholder="Enter your password" >
         </div>
         <button type="submit" class="btn-login">Login</button>
         <div class="form-options">
-            <a href="/forgot" class="forgot-password">Forgot Password?</a>
+            <a href="/forgot" style="text-decoration:none"; class="forgot-password">Forgot Password?</a>
             <span class="divider">|</span>
-            <a href="/register" class="register">Register</a>
+            <a href="/register"  style="text-decoration:none"; class="register">Register</a>
         </div>
+        <ul class="error"> 
+        @foreach($errors->all() as $error) 
+        <li>{{ $error }}</li> 
+        @endforeach 
+    </ul>
     </form>
 </div>
 
