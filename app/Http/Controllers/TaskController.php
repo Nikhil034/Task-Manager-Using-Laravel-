@@ -16,19 +16,44 @@ class TaskController extends Controller
     function SaveUser(Request $request)
     {
       
-        $obj=new Client;
-        $obj->Name=$request->name;
-        $obj->Email=$request->email;
-        $enc=$request->password;
-        $obj->Password=Crypt::encrypt($enc);
-        $obj->save();
-        return Redirect::back()->with('message','Register succesfully!');
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:clients,email',
+            'password' => 'required|min:6',
+        ]);
+    
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
+        else
+        {
+            $obj=new Client;
+            $obj->Name=$request->name;
+            $obj->Email=$request->email;
+            $enc=$request->password;
+            $obj->Password=Crypt::encrypt($enc);
+            $obj->save();
+            return Redirect::back()->with('message','Register succesfully!');
 
+        }
+    
     }
 
     function LoginCheck(Request $request)
     {
 
+
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+    
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
+        else
+        {
+        
         $cl_obj=client::where('Email',$request->email)->first();
         
         if($cl_obj)
@@ -38,16 +63,19 @@ class TaskController extends Controller
             $request->session()->put('AuthClient',$request->email);
             return redirect("/dashboard");
             
-         }
-         else
-         {
+          }
+          else
+          {
             return Redirect::back()->with('invalid','Wrong Password For Provided Email Try Again !');  
-         }
+          } 
         }
         else
-        {
+         {
             return Redirect::back()->with('invalid','Wrong Email Plese Try Again !');  
-        }
+         }
+
+       }
+
     }
 
         function Dash(Request $request)
@@ -100,19 +128,32 @@ class TaskController extends Controller
     function ClientForgot(Request $request)
     {
 
-        $cl=client::where('Email',$request->email)->first();
 
-        if($cl)
-        {
-         $enc=$request->password;
-         $cl->Password=Crypt::encrypt($enc);
-         $cl->save();
-         return Redirect::back()->with('message','Your password reset succesfully!');
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password'=>'required|min'
+        ]);
+    
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
         }
         else
         {
-            return Redirect::back()->with('invalid','Email address not found!');
-        }      
+            $cl=client::where('Email',$request->email)->first();
+
+            if($cl)
+            {
+             $enc=$request->password;
+             $cl->Password=Crypt::encrypt($enc);
+             $cl->save();
+             return Redirect::back()->with('message','Your password reset succesfully!');
+            }
+            else
+            {
+                return Redirect::back()->with('invalid','Email address not found!');
+            } 
+
+        }
     }
 
     function AddTask(Request $request)
