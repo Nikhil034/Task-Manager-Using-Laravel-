@@ -85,19 +85,26 @@ input[type="password"] {
         <h2>Register</h2>
         <div class="form-group">
             <label for="name">Name</label>
-            <input type="text" id="name" name="name" placeholder="Enter your name" required>
+            <input type="text" id="name" name="name" placeholder="Enter your name" >
         </div>
         <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            <input type="email" id="email" name="email" placeholder="Enter your email" >
         </div>
         <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="Enter your password"  required>
+            <input type="password" id="password" name="password" placeholder="Enter your password" >
         </div>
         <button type="submit" class="btn-save">Save</button>
         <br>
         <a href="/login"><button type="button" class="btn-back">Back</button></a>
+
+        <ul class="error"> 
+        @foreach($errors->all() as $error) 
+        <li>{{ $error }}</li> 
+        @endforeach 
+    </ul>
+
     </form>
 
           @if(Session::has('message'))
@@ -106,11 +113,7 @@ input[type="password"] {
             </script>
          @endif
 
-    <ul class="error"> 
-        @foreach($errors->all() as $error) 
-        <li>{{ $error }}</li> 
-        @endforeach 
-    </ul>
+    
 
 </div>
 
